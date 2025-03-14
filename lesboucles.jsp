@@ -55,10 +55,48 @@ class Solution {
 <p>Exemple si l'utilisateur saisie la valeur 5</p>
 <p>*</br>**</br>***</br>****</br>*****</p>
 
+import java.util.Scanner;
+
+class Solution {
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        
+        int n = in.nextInt();
+        
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+}
+
+
 <h2>Exercice 3 : Triangle rectangle inversé</h2>
 <p>Ecrire le code afin de produire un triangle rectangle aligné sur la gauche</p>
 <p>Exemple si l'utilisateur saisie la valeur 5</p>
 <p>*****</br>****</br>***</br>**</br>*</p>
+
+import java.util.Scanner;
+
+class Solution {
+
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        
+        int n = in.nextInt();
+        
+        for (int i = n; i >= 1; i--) {
+            for (int j = 1; j <= i; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+}
+
 
 <h2>Exercice 4 : Triangle rectangle 2</h2>
 <p>Ecrire le code afin de produire un triangle rectangle aligné sur la droite</p>
