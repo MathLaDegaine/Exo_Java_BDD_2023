@@ -1,12 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POO</title>
+<title>Boucles</title>
 </head>
-<body>
-    <h2>Ajouter une Tâche</h2>
-    
+<body bgcolor="white">
+<h1>Exercices sur les boucles</h1>
+
+<form action="POO.jsp" method="post">
+    <label for="inputValeur">Saisir le nombre d'étoiles : </label>
+    <input type="text" id="inputValeur" name="valeur">
+    <input type="submit" value="Afficher">
+</form>
+
+
+
+<p><a href="index.html">Retour au sommaire</a></p>
 </body>
 </html>
