@@ -5,20 +5,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionnaire de Tâches</title>
+    <title>Gestionnaire de Taches</title>
 </head>
 <body>
-    <h2>Gestionnaire de Tâches</h2>
+    <h2>Gestionnaire de Taches</h2>
 
     <form action="task.jsp" method="post">
-        <h3>Ajouter une Tâche</h3>
+        <h3>Ajouter une Tache</h3>
         <label for="title">Titre : </label>
         <input type="text" id="title" name="title" required><br><br>
         
         <label for="description">Description : </label>
         <input type="text" id="description" name="description" required><br><br>
         
-        <label for="dueDate">Date d'échéance (YYYY-MM-DD) : </label>
+        <label for="dueDate">Date d'echeance (YYYY-MM-DD) : </label>
         <input type="text" id="dueDate" name="dueDate" required><br><br>
         
         <input type="submit" value="Ajouter">
@@ -26,7 +26,7 @@
 
     <hr>
 
-    <h3>Tâches en cours</h3>
+    <h3>Taches en cours</h3>
 
     <%
         List<Task> tasks = (List<Task>) session.getAttribute("tasks");
@@ -57,8 +57,8 @@
             <th>#</th>
             <th>Titre</th>
             <th>Description</th>
-            <th>Date d'échéance</th>
-            <th>Complétée</th>
+            <th>Date d'echeance</th>
+            <th>Complete</th>
             <th>Actions</th>
         </tr>
         
@@ -76,7 +76,7 @@
                 <form action="task.jsp" method="post" style="display:inline;">
                     <input type="hidden" name="action" value="complete">
                     <input type="hidden" name="taskIndex" value="<%= i %>">
-                    <input type="submit" value="Compléter">
+                    <input type="submit" value="Completer">
                 </form>
                 <form action="task.jsp" method="post" style="display:inline;">
                     <input type="hidden" name="action" value="delete">
