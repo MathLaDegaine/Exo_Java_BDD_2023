@@ -9,8 +9,6 @@
 <form action="#" method="post">
     <label for="inputValeur">Saisir le nom d'une tache : </label>
     <input type="text" id="inputValeur" name="valeur">
-    <label for="terminee">Tache terminee : </label>
-    <input type="checkbox" id="terminee" name="terminee" value="true">
     <input type="submit" value="Enregistrer">
 </form>
 
@@ -27,6 +25,10 @@
         public String getStatus() {
             return terminee ? "Terminee" : "Non terminee";
         }
+
+        public void setStatus(boolean status) {
+            this.terminee = status;
+        }
     }
 
     MyClass[] taches = new MyClass[10];
@@ -36,11 +38,20 @@
 <%
     String valeur = request.getParameter("valeur");
     String termineeParam = request.getParameter("terminee");
+    String taskIndexParam = request.getParameter("taskIndex");
+
     boolean terminee = termineeParam != null && termineeParam.equals("true");
 
     if (valeur != null && !valeur.isEmpty() && currentIndex < taches.length) {
-        taches[currentIndex] = new MyClass(valeur, terminee);
+        taches[currentIndex] = new MyClass(valeur, false); // Tache par défaut non terminee
         currentIndex++;
+    }
+
+    if (taskIndexParam != null) {
+        int taskIndex = Integer.parseInt(taskIndexParam);
+        if (taskIndex >= 0 && taskIndex < currentIndex) {
+            taches[taskIndex].setStatus(terminee); // Mettre à jour le statut de la tâche
+        }
     }
 %>
 
@@ -49,7 +60,16 @@
 <%
     for (int i = 0; i < currentIndex; i++) {
 %>
-    <li><%= taches[i].nameTache %> - <%= taches[i].getStatus() %></li>
+    <li>
+        <%= taches[i].nameTache %> - <%= taches[i].getStatus() %>
+        <form action="#" method="post" style="display:inline;">
+            <input type="hidden" name="taskIndex" value="<%= i %>">
+            <input type="checkbox" name="terminee" value="true" 
+                <%= taches[i].terminee ? "checked" : "" %> 
+                onchange="this.form.submit()"> 
+            Terminee
+        </form>
+    </li>
 <%
     }
 %>
