@@ -14,6 +14,9 @@
     <label for="dateFin">Date de fin : </label>
     <input type="date" id="dateFin" name="dateFin" required>
 
+    <label for="description">Description de la tâche : </label>
+    <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+
     <input type="submit" value="Enregistrer">
 </form>
 
@@ -22,11 +25,13 @@
         String nameTache;
         boolean terminee;
         String dateFin;
+        String description;
 
-        public MyClass(String name, boolean terminee, String dateFin) {
+        public MyClass(String name, boolean terminee, String dateFin, String description) {
             this.nameTache = name;
             this.terminee = terminee;
             this.dateFin = dateFin;
+            this.description = description;
         }
 
         public void setStatus(boolean status) {
@@ -48,9 +53,10 @@
 
     String valeur = request.getParameter("valeur");
     String dateFin = request.getParameter("dateFin");
+    String description = request.getParameter("description");
 
-    if (valeur != null && !valeur.isEmpty() && dateFin != null && !dateFin.isEmpty()) {
-        taches.add(new MyClass(valeur, false, dateFin));
+    if (valeur != null && !valeur.isEmpty() && dateFin != null && !dateFin.isEmpty() && description != null && !description.isEmpty()) {
+        taches.add(new MyClass(valeur, false, dateFin, description));
     }
 
     String termineeParam = request.getParameter("terminee");
@@ -81,6 +87,7 @@
         <th>Nom de la tâche</th>
         <th>Statut</th>
         <th>Date de fin</th>
+        <th>Description</th>
         <th>Actions</th>
     </tr>
     <%
@@ -91,6 +98,7 @@
         <td><%= task.nameTache %></td>
         <td><%= task.getStatus() %></td>
         <td><%= task.dateFin %></td>
+        <td><%= task.description %></td>
         <td>
             <form action="#" method="post" style="display:inline;">
                 <input type="hidden" name="taskIndex" value="<%= i %>">
