@@ -26,6 +26,10 @@
         public void setStatus(boolean status) {
             this.terminee = status;
         }
+
+        public String getStatus() {
+            return terminee ? "Terminee" : "Non terminee";
+        }
     }
 %>
 
@@ -67,13 +71,12 @@
         MyClass task = taches.get(i);
 %>
     <li>
-        <%= task.nameTache %>
+        <%= task.nameTache %> - <%= task.getStatus() %>
         <form action="#" method="post" style="display:inline;">
             <input type="hidden" name="taskIndex" value="<%= i %>">
             <input type="checkbox" name="terminee" value="true" 
                 <%= task.terminee ? "checked" : "" %> 
                 onchange="this.form.submit()"> 
-            Terminee
         </form>
     </li>
 <%
