@@ -4,13 +4,16 @@
 <title>Boucles</title>
 </head>
 <body bgcolor="white">
-<h1>Exercices sur les boucles</h1>
-
-<form action="POO.jsp" method="post">
-    <label for="inputValeur">Saisir le nombre d'étoiles : </label>
-    <input type="text" id="inputValeur" name="valeur">
-    <input type="submit" value="Afficher">
-</form>
+    <h2>Ajouter une Tâche</h2>
+    <form action="TaskServlet" method="post">
+        <label>Titre :</label>
+        <input type="text" name="title" required><br>
+        <label>Description :</label>
+        <input type="text" name="description" required><br>
+        <label>Date d’échéance :</label>
+        <input type="date" name="dueDate" required><br>
+        <button type="submit">Ajouter</button>
+    </form>
 
 <%-- Récupération de la valeur saisie par l'utilisateur --%>
 <% 
