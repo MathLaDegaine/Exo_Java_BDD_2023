@@ -16,7 +16,17 @@
     </form>
     <h2>Liste des Taches</h2>
 <ul>
-    <li></li>
+    <% for (Task task : tasks) { %>
+    <li>
+        <strong><%= task.getTitle() %></strong> - <%= task.getDescription() %> - 
+                <%= task.getDueDate() %> - 
+                <%= task.isCompleted() ? "Terminée" : "En cours" %>
+                <form action="TaskServlet" method="post" style="display:inline;">
+                    <input type="hidden" name="title" value="<%= task.getTitle() %>">
+                    <button type="submit" name="action" value="delete">Supprimer</button>
+                    <button type="submit" name="action" value="complete">Terminer</button>
+                </form>
+    </li>
 </ul>
 
 <p><a href="index.html">Retour au sommaire</a></p>
