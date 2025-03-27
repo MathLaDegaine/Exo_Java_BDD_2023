@@ -44,7 +44,7 @@
 <p>Exemple si l'utilisateur saisie la valeur 5</p>
 <p>
 <%-- Boucle pour afficher un triangle rectangle inversé --%>
-    <% for (int i = cpt; i >= 1; i--) { %>
+    <% for (int i = cpt; i >= 2; i--) { %>
         <%= "*".repeat(i) %><br>
     <% } %>
 </p>
