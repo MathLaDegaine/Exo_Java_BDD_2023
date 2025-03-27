@@ -29,7 +29,7 @@
     <% } %>
 </p>
 
-<h2>Exercice 2 : Triangle rectangle gauche</h2>
+<h2>Exercice5 : Triangle rectangle gauche</h2>
 <p>Ecrire le code afin de produire un triangle rectangle aligné sur la gauche</p>
 <p>Exemple si l'utilisateur saisie la valeur 5</p>
 <p>
