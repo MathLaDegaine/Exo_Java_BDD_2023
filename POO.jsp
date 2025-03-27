@@ -26,7 +26,7 @@
 <body>
     <h2>Ajouter une Tâche</h2>
     <form action="TaskServlet" method="post">
-        <label for="title">Titre :</label>
+        <label for="title">Titre:</label>
         <input type="text" id="title" name="title" required><br>
         <label for="description">Description :</label>
         <input type="text" id="description" name="description" required><br>
