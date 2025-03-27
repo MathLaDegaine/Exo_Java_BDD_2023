@@ -1,107 +1,117 @@
-<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionnaire de Taches</title>
-</head>
-<body>
-    <h2>Gestionnaire de Taches</h2>
+<%@ page import="java.util.ArrayList" %>
 
-    <form action="task.jsp" method="post">
-        <h3>Ajouter une Tache</h3>
-        <label for="title">Titre : </label>
-        <input type="text" id="title" name="title" required><br><br>
-        
-        <label for="description">Description : </label>
-        <input type="text" id="description" name="description" required><br><br>
-        
-        <label for="dueDate">Date de fin: </label>
-        <input type="text" id="dueDate" name="dueDate" required><br><br>
-        
-        <input type="submit" value="Ajouter">
+<%!
+    public class MyTask {
+        private String titre;
+        private String description;
+        private boolean terminee;
+
+        public MyTask(String titre, String description) {
+            this.titre = titre;
+            this.description = description;
+            this.terminee = false;
+        }
+
+        public String getTitre() { return titre; }
+        public String getDescription() { return description; }
+        public boolean isTerminee() { return terminee; }
+        public void setTerminee(boolean terminee) { this.terminee = terminee; }
+    }
+%>
+
+<html>
+<head>
+    <title>Gestionnaire de Tâches</title>
+</head>
+<body bgcolor="white">
+    <h1>Ajouter une tâche</h1>
+
+    <form action="taches.jsp" method="post">
+        <label for="titre">Titre :</label><br>
+        <input type="text" id="titre" name="titre" required><br><br>
+
+        <label for="description">Description :</label><br>
+        <textarea id="description" name="description" rows="4" cols="40" required></textarea><br><br>
+
+        <input type="submit" value="Ajouter la tâche">
     </form>
 
     <hr>
 
-    <h3>Taches en cours</h3>
+<%
+    ArrayList<MyTask> listeTaches = (ArrayList<MyTask>) session.getAttribute("listeTaches");
 
-    <%
-        List<Task> tasks = (List<Task>) session.getAttribute("tasks");
-        if (tasks == null) {
-            tasks = new ArrayList<Task>();
-            session.setAttribute("tasks", tasks);
+    if (listeTaches == null) {
+        listeTaches = new ArrayList<>();
+        session.setAttribute("listeTaches", listeTaches);
+    }
+
+    // Création d'une nouvelle tâche
+    String titre = request.getParameter("titre");
+    String description = request.getParameter("description");
+
+    if (titre != null && description != null && !titre.isEmpty() && !description.isEmpty()) {
+        MyTask nouvelleTache = new MyTask(titre, description);
+        listeTaches.add(nouvelleTache);
+    }
+
+    // Suppression d'une tâche
+    String deleteIndexStr = request.getParameter("deleteIndex");
+    if (deleteIndexStr != null) {
+        int index = Integer.parseInt(deleteIndexStr);
+        if (index >= 0 && index < listeTaches.size()) {
+            listeTaches.remove(index);
         }
+    }
 
-        if (request.getMethod().equalsIgnoreCase("POST")) {
-            String title = request.getParameter("title");
-            String description = request.getParameter("description");
-            String dueDateString = request.getParameter("dueDate");
-            
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                Date dueDate = sdf.parse(dueDateString);
-                Task newTask = new Task(title, description, dueDate);
-                tasks.add(newTask);
-                session.setAttribute("tasks", tasks);
-            } catch (Exception e) {
-                out.println("Erreur dans le format de la date.");
-            }
+    // Mise à jour de l'état "Terminée"
+    String updateIndexStr = request.getParameter("updateIndex");
+    String checkboxValue = request.getParameter("terminee");
+    if (updateIndexStr != null) {
+        int index = Integer.parseInt(updateIndexStr);
+        if (index >= 0 && index < listeTaches.size()) {
+            listeTaches.get(index).setTerminee(checkboxValue != null);
         }
-    %>
+    }
 
-    <table border="1">
-        <tr>
-            <th>#</th>
-            <th>Titre</th>
-            <th>Description</th>
-            <th>Date d'echeance</th>
-            <th>Complete</th>
-            <th>Actions</th>
-        </tr>
-        
-        <%
-            for (int i = 0; i < tasks.size(); i++) {
-                Task task = tasks.get(i);
-        %>
-        <tr>
-            <td><%= i + 1 %></td>
-            <td><%= task.getTitle() %></td>
-            <td><%= task.getDescription() %></td>
-            <td><%= new SimpleDateFormat("yyyy-MM-dd").format(task.getDueDate()) %></td>
-            <td><%= task.isCompleted() ? "Oui" : "Non" %></td>
-            <td>
-                <form action="task.jsp" method="post" style="display:inline;">
-                    <input type="hidden" name="action" value="complete">
-                    <input type="hidden" name="taskIndex" value="<%= i %>">
-                    <input type="submit" value="Completer">
-                </form>
-                <form action="task.jsp" method="post" style="display:inline;">
-                    <input type="hidden" name="action" value="delete">
-                    <input type="hidden" name="taskIndex" value="<%= i %>">
-                    <input type="submit" value="Supprimer">
-                </form>
-            </td>
-        </tr>
-        <%
-            }
-        %>
-    </table>
+    if (!listeTaches.isEmpty()) {
+%>
+    <h2>Liste des tâches :</h2>
+    <ul>
+<%
+        for (int i = 0; i < listeTaches.size(); i++) {
+            MyTask t = listeTaches.get(i);
+%>
+        <li>
+            <strong><%= t.getTitre() %></strong><br>
+            <em><%= t.getDescription() %></em><br>
 
-    <%
-        String action = request.getParameter("action");
-        if ("complete".equals(action)) {
-            int taskIndex = Integer.parseInt(request.getParameter("taskIndex"));
-            Task task = tasks.get(taskIndex);
-            task.setCompleted(true);
-            session.setAttribute("tasks", tasks);
-        } else if ("delete".equals(action)) {
-            int taskIndex = Integer.parseInt(request.getParameter("taskIndex"));
-            tasks.remove(taskIndex);
-            session.setAttribute("tasks", tasks);
+            <form method="post" action="taches.jsp" style="display:inline;">
+                <input type="hidden" name="updateIndex" value="<%= i %>">
+                <label>
+                    <input type="checkbox" name="terminee" <%= t.isTerminee() ? "checked" : "" %> onchange="this.form.submit()"> 
+                    Tâche terminée ?
+                </label>
+            </form>
+
+            <form method="post" action="taches.jsp" style="display:inline;">
+                <input type="hidden" name="deleteIndex" value="<%= i %>">
+                <input type="submit" value="Supprimer">
+            </form>
+        </li>
+        <br>
+<%
         }
-    %>
+%>
+    </ul>
+<%
+    } else {
+%>
+    <p>Aucune tâche enregistrée.</p>
+<%
+    }
+%>
+
 </body>
 </html>
