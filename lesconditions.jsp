@@ -3,12 +3,12 @@
 
 <html>
 <head>
-<title>Taches</title>
+<title>Tâches</title>
 </head>
 <body bgcolor=white>
-<h1>Saisir une tache</h1>
+<h1>Saisir une tâche</h1>
 <form action="#" method="post">
-    <label for="inputValeur">Saisir le nom d'une tache : </label>
+    <label for="inputValeur">Saisir le nom d'une tâche : </label>
     <input type="text" id="inputValeur" name="valeur">
     <input type="submit" value="Enregistrer">
 </form>
@@ -28,7 +28,7 @@
         }
 
         public String getStatus() {
-            return terminee ? "Terminee" : "Non terminee";
+            return terminee ? "Terminée" : "Non terminée";
         }
     }
 %>
@@ -36,7 +36,7 @@
 <%
     // Récupérer la liste des tâches stockées dans la session, si elle existe
     java.util.List<MyClass> taches = (java.util.List<MyClass>) session.getAttribute("taches");
-    
+
     if (taches == null) {
         taches = new java.util.ArrayList<MyClass>();  // Initialiser la liste si elle n'existe pas
     }
@@ -59,11 +59,20 @@
         }
     }
 
+    // Supprimer une tâche si demandé
+    String deleteIndexParam = request.getParameter("deleteIndex");
+    if (deleteIndexParam != null) {
+        int deleteIndex = Integer.parseInt(deleteIndexParam);
+        if (deleteIndex >= 0 && deleteIndex < taches.size()) {
+            taches.remove(deleteIndex); // Suppression de la tâche
+        }
+    }
+
     // Sauvegarder la liste de tâches mise à jour dans la session
     session.setAttribute("taches", taches);
 %>
 
-<h2>Liste des Taches Saisies :</h2>
+<h2>Liste des Tâches Saisies :</h2>
 <ul>
 <%
     // Afficher toutes les tâches avec leur statut
@@ -77,6 +86,10 @@
             <input type="checkbox" name="terminee" value="true" 
                 <%= task.terminee ? "checked" : "" %> 
                 onchange="this.form.submit()"> 
+        </form>
+        <form action="#" method="post" style="display:inline;">
+            <input type="hidden" name="deleteIndex" value="<%= i %>">
+            <input type="submit" value="Supprimer">
         </form>
     </li>
 <%
