@@ -15,7 +15,9 @@
         <button type="submit">Ajouter</button>
     </form>
     <h2>Liste des Taches</h2>
-
+<ul>
+    <li></li>
+</ul>
 
 <p><a href="index.html">Retour au sommaire</a></p>
 </body>
