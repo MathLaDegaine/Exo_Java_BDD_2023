@@ -20,18 +20,30 @@
             nameTache = name;
         }
     }
+
+    MyClass[] taches = new MyClass[10];
+    int currentIndex = 0;
 %>
 
 <%
     String valeur = request.getParameter("valeur");
 
-    if (valeur != null && !valeur.isEmpty()) {
-        MyClass tache = new MyClass(valeur);
+    if (valeur != null && !valeur.isEmpty() && currentIndex < taches.length) {
+        taches[currentIndex] = new MyClass(valeur);
+        currentIndex++;
+    }
 %>
-        <p>Nom de la tÃ¢che : <%= tache.nameTache %></p>
+
+<h2>Liste des Taches Saisies :</h2>
+<ul>
+<%
+    for (int i = 0; i < currentIndex; i++) {
+%>
+    <li><%= taches[i].nameTache %></li>
 <%
     }
 %>
+</ul>
 
 </body>
 </html>
