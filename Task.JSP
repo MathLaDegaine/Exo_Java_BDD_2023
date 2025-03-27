@@ -1,23 +1,107 @@
-<%@ page import="Task" %> <!-- Importation de la classe Task -->
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"%>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Task Details</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionnaire de Tâches</title>
 </head>
 <body>
-    <h2>Task Details</h2>
+    <h2>Gestionnaire de Tâches</h2>
+
+    <form action="task.jsp" method="post">
+        <h3>Ajouter une Tâche</h3>
+        <label for="title">Titre : </label>
+        <input type="text" id="title" name="title" required><br><br>
+        
+        <label for="description">Description : </label>
+        <input type="text" id="description" name="description" required><br><br>
+        
+        <label for="dueDate">Date d'échéance (YYYY-MM-DD) : </label>
+        <input type="text" id="dueDate" name="dueDate" required><br><br>
+        
+        <input type="submit" value="Ajouter">
+    </form>
+
+    <hr>
+
+    <h3>Tâches en cours</h3>
 
     <%
-        // Création d'une instance de Task avec des valeurs d'exemple
-        Task task = new Task("Finish project", "Complete the Java project by tomorrow", new java.util.Date());
+        List<Task> tasks = (List<Task>) session.getAttribute("tasks");
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+            session.setAttribute("tasks", tasks);
+        }
+
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            String dueDateString = request.getParameter("dueDate");
+            
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Date dueDate = sdf.parse(dueDateString);
+                Task newTask = new Task(title, description, dueDate);
+                tasks.add(newTask);
+                session.setAttribute("tasks", tasks);
+            } catch (Exception e) {
+                out.println("Erreur dans le format de la date.");
+            }
+        }
     %>
 
-    <p><strong>Title:</strong> <%= task.getTitle() %></p>
-    <p><strong>Description:</strong> <%= task.getDescription() %></p>
-    <p><strong>Due Date:</strong> <%= task.getDueDate() %></p>
-    <p><strong>Completed:</strong> <%= task.isCompleted() ? "Yes" : "No" %></p>
+    <table border="1">
+        <tr>
+            <th>#</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Date d'échéance</th>
+            <th>Complétée</th>
+            <th>Actions</th>
+        </tr>
+        
+        <%
+            for (int i = 0; i < tasks.size(); i++) {
+                Task task = tasks.get(i);
+        %>
+        <tr>
+            <td><%= i + 1 %></td>
+            <td><%= task.getTitle() %></td>
+            <td><%= task.getDescription() %></td>
+            <td><%= new SimpleDateFormat("yyyy-MM-dd").format(task.getDueDate()) %></td>
+            <td><%= task.isCompleted() ? "Oui" : "Non" %></td>
+            <td>
+                <form action="task.jsp" method="post" style="display:inline;">
+                    <input type="hidden" name="action" value="complete">
+                    <input type="hidden" name="taskIndex" value="<%= i %>">
+                    <input type="submit" value="Compléter">
+                </form>
+                <form action="task.jsp" method="post" style="display:inline;">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="taskIndex" value="<%= i %>">
+                    <input type="submit" value="Supprimer">
+                </form>
+            </td>
+        </tr>
+        <%
+            }
+        %>
+    </table>
 
+    <%
+        String action = request.getParameter("action");
+        if ("complete".equals(action)) {
+            int taskIndex = Integer.parseInt(request.getParameter("taskIndex"));
+            Task task = tasks.get(taskIndex);
+            task.setCompleted(true);
+            session.setAttribute("tasks", tasks);
+        } else if ("delete".equals(action)) {
+            int taskIndex = Integer.parseInt(request.getParameter("taskIndex"));
+            tasks.remove(taskIndex);
+            session.setAttribute("tasks", tasks);
+        }
+    %>
 </body>
 </html>
