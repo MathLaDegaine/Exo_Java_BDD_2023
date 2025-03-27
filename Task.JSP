@@ -18,7 +18,7 @@
         <label for="description">Description : </label>
         <input type="text" id="description" name="description" required><br><br>
         
-        <label for="dueDate">Date d'echeance (YYYY-MM-DD) : </label>
+        <label for="dueDate">Date d'echeance: </label>
         <input type="text" id="dueDate" name="dueDate" required><br><br>
         
         <input type="submit" value="Ajouter">
