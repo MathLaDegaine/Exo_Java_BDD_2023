@@ -1,16 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="Task" %>
-<%
-    List<Task> tasks = (List<Task>) session.getAttribute("tasks");
-    if (tasks == null) {
-        tasks = new ArrayList<>();
-        session.setAttribute("tasks", tasks);
-    }
-%>
+
+
+
+
+
 <html>
 <head>
 <title>Boucles</title>
