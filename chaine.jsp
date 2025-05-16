@@ -12,9 +12,6 @@
    
 %>
 
-<h2>Message original : <%= bonjour %></h2>
-<h2>En majuscules : <%= majuscules %></h2>
-<h2>Première lettre en majuscule : <%= premiereLettreMajuscule %></h2>
 
 </body>
 </html>
