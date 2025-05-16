@@ -12,7 +12,7 @@
    
 %>
   <h1>Résultats de traitement de la chaîne</h1>
-    <p><strong>Original :</strong> <%= bonjour %></p>
+    <p><strong>Base = </strong> <%= bonjour %></p>
     <p><strong>Tout en MAJUSCULES :</strong> <%= majuscules %></p>
     <p><strong>Seulement la 1ère lettre en majuscule :</strong> <%= Plettre %></p>
 
